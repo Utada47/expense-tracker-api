@@ -4,10 +4,15 @@
   "description": "A simple REST API to track daily expenses",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "jest"
   },
   "license": "MIT",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
   }
 }
