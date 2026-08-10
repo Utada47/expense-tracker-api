@@ -22,7 +22,12 @@ router.post('/', (req, res) => {
     return res.status(400).json({ error: 'amount (number) and description are required' });
   }
 
-  const expense = store.add({ amount, description, category: category || 'uncategorized' });
+  const expense = store.add({
+    amount,
+    description,
+    category: category || 'uncategorized',
+    date: new Date().toISOString(),
+  });
   res.status(201).json(expense);
 });
 
