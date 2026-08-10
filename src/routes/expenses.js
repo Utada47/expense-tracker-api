@@ -12,6 +12,8 @@ router.get('/', (req, res) => {
     results = results.filter((e) => e.category.toLowerCase() === normalized);
   }
 
+  results = results.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
   res.json(results);
 });
 
