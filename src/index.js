@@ -27,6 +27,9 @@ app.post('/expenses', (req, res) => {
 
 app.get('/expenses/:id', (req, res) => {
   const expense = store.getById(Number(req.params.id));
+  if (!expense) {
+    return res.status(404).json({ error: 'Expense not found' });
+  }
   res.json(expense);
 });
 
