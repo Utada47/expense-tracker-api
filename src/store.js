@@ -15,7 +15,12 @@ function load() {
 }
 
 function persist() {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
+  try {
+    fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+    fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2));
+  } catch (err) {
+    console.error('Failed to persist expenses to disk:', err.message);
+  }
 }
 
 function getAll() {
