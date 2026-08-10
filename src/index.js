@@ -15,7 +15,9 @@ app.get('/expenses', (req, res) => {
 });
 
 app.post('/expenses', (req, res) => {
-  const expense = store.add(req.body);
+  const { amount, description } = req.body;
+  // NOTE: no validation yet, will crash on bad input
+  const expense = store.add({ amount, description });
   res.status(201).json(expense);
 });
 
