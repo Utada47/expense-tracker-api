@@ -4,7 +4,7 @@ const store = require('../store');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const { category } = req.query;
+  const { category, page = 1, limit = 10 } = req.query;
   let results = store.getAll();
 
   if (category) {
@@ -14,7 +14,10 @@ router.get('/', (req, res) => {
 
   results = results.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  res.json(results);
+  const start = (page - 1) * limit;
+  const paginated = results.slice(start, start + Number(limit));
+
+  res.json(paginated);
 });
 
 router.post('/', (req, res) => {
