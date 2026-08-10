@@ -1,0 +1,10 @@
+{
+  "name": "expense-tracker-api",
+  "version": "0.1.0",
+  "description": "A simple REST API to track daily expenses",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "license": "MIT"
+}
