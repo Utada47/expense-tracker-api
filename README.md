@@ -2,15 +2,41 @@
 
 A simple REST API for tracking daily expenses, built with Node.js and Express.
 
-## Status
+## Features
 
-🚧 Work in progress — this project is being built incrementally.
+- CRUD endpoints for expenses
+- Filter by category, sort by date
+- Pagination
+- Persistent storage (JSON file)
+- Test suite with Jest + Supertest
 
 ## Getting Started
 
+### Requirements
+
+- Node.js 18+
+- npm
+
+### Install
+
 ```bash
 npm install
+```
+
+### Run the server
+
+```bash
 npm start
 ```
 
-The server will start on `http://localhost:3000`.
+Server runs at `http://localhost:3000` by default (override with the `PORT` env var).
+
+### Run tests
+
+```bash
+npm test
+```
+
+## API Reference
+
+### Health check
