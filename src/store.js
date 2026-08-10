@@ -18,4 +18,18 @@ function getById(id) {
   return expenses.find((e) => e.id === id);
 }
 
-module.exports = { getAll, add, getById };
+function update(id, data) {
+  const expense = getById(id);
+  if (!expense) return null;
+  Object.assign(expense, data);
+  return expense;
+}
+
+function remove(id) {
+  const index = expenses.findIndex((e) => e.id === id);
+  if (index === -1) return false;
+  expenses.splice(index, 1);
+  return true;
+}
+
+module.exports = { getAll, add, getById, update, remove };
