@@ -14,6 +14,11 @@ app.get('/expenses', (req, res) => {
   res.json(store.getAll());
 });
 
+app.post('/expenses', (req, res) => {
+  const expense = store.add(req.body);
+  res.status(201).json(expense);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
