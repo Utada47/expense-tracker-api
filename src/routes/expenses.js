@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
   let results = store.getAll();
 
   if (category) {
-    results = results.filter((e) => e.category === category);
+    const normalized = category.toLowerCase();
+    results = results.filter((e) => e.category.toLowerCase() === normalized);
   }
 
   res.json(results);
