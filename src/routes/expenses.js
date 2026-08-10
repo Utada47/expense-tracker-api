@@ -4,7 +4,9 @@ const store = require('../store');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const { category, page = 1, limit = 10 } = req.query;
+  const { category } = req.query;
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.max(1, Number(req.query.limit) || 10);
   let results = store.getAll();
 
   if (category) {
