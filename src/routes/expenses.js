@@ -4,7 +4,14 @@ const store = require('../store');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.json(store.getAll());
+  const { category } = req.query;
+  let results = store.getAll();
+
+  if (category) {
+    results = results.filter((e) => e.category === category);
+  }
+
+  res.json(results);
 });
 
 router.post('/', (req, res) => {
