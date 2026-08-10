@@ -16,7 +16,11 @@ app.get('/expenses', (req, res) => {
 
 app.post('/expenses', (req, res) => {
   const { amount, description } = req.body;
-  // NOTE: no validation yet, will crash on bad input
+
+  if (typeof amount !== 'number' || !description) {
+    return res.status(400).json({ error: 'amount (number) and description are required' });
+  }
+
   const expense = store.add({ amount, description });
   res.status(201).json(expense);
 });
