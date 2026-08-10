@@ -25,6 +25,11 @@ app.post('/expenses', (req, res) => {
   res.status(201).json(expense);
 });
 
+app.get('/expenses/:id', (req, res) => {
+  const expense = store.getById(Number(req.params.id));
+  res.json(expense);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

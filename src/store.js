@@ -14,4 +14,8 @@ function add(expense) {
   return newExpense;
 }
 
-module.exports = { getAll, add };
+function getById(id) {
+  return expenses.find((e) => e.id === id);
+}
+
+module.exports = { getAll, add, getById };
