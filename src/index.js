@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const morgan = require('morgan');
 const expensesRouter = require('./routes/expenses');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(morgan('dev'));
 app.use(express.json());
 
 app.get('/health', (req, res) => {
