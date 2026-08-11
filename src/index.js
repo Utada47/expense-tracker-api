@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const expensesRouter = require('./routes/expenses');
 const errorHandler = require('./middleware/errorHandler');
@@ -8,6 +9,7 @@ const requireApiKey = require('./middleware/auth');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
