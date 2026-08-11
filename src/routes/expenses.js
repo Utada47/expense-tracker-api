@@ -62,4 +62,10 @@ router.delete('/:id', (req, res) => {
   res.status(204).send();
 });
 
+router.get('/summary', (req, res) => {
+  const all = store.getAll();
+  const total = all.reduce((sum, e) => sum + e.amount, 0);
+  res.json({ total, count: all.length });
+});
+
 module.exports = router;
