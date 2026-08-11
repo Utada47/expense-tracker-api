@@ -38,9 +38,10 @@ router.get('/summary/monthly', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { amount, description, category } = req.body;
+  const { description, category } = req.body;
+  const amount = typeof req.body.amount === 'string' ? Number(req.body.amount) : req.body.amount;
 
-  const validationError = validateExpenseInput(req.body);
+  const validationError = validateExpenseInput({ ...req.body, amount });
   if (validationError) {
     return res.status(400).json({ error: validationError });
   }
