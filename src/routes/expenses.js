@@ -22,6 +22,12 @@ router.get('/', (req, res) => {
   res.json(paginated);
 });
 
+router.get('/summary', (req, res) => {
+  const all = store.getAll();
+  const total = all.reduce((sum, e) => sum + e.amount, 0);
+  res.json({ total, count: all.length });
+});
+
 router.post('/', (req, res) => {
   const { amount, description, category } = req.body;
 
@@ -60,12 +66,6 @@ router.delete('/:id', (req, res) => {
     return res.status(404).json({ error: 'Expense not found' });
   }
   res.status(204).send();
-});
-
-router.get('/summary', (req, res) => {
-  const all = store.getAll();
-  const total = all.reduce((sum, e) => sum + e.amount, 0);
-  res.json({ total, count: all.length });
 });
 
 module.exports = router;
