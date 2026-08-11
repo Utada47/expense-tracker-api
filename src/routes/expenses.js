@@ -1,6 +1,7 @@
 const express = require('express');
 const store = require('../store');
 const { buildSummary, buildMonthlySummary } = require('../services/summary');
+const { validateExpenseInput } = require('../validators/expense');
 
 const router = express.Router();
 
@@ -39,8 +40,9 @@ router.get('/summary/monthly', (req, res) => {
 router.post('/', (req, res) => {
   const { amount, description, category } = req.body;
 
-  if (typeof amount !== 'number' || !description) {
-    return res.status(400).json({ error: 'amount (number) and description are required' });
+  const validationError = validateExpenseInput(req.body);
+  if (validationError) {
+    return res.status(400).json({ error: validationError });
   }
 
   const expense = store.add({
