@@ -5,7 +5,7 @@ const { buildSummary } = require('../services/summary');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const { category } = req.query;
+  const { category, order = 'desc' } = req.query;
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.max(1, Number(req.query.limit) || 10);
   let results = store.getAll();
@@ -15,7 +15,11 @@ router.get('/', (req, res) => {
     results = results.filter((e) => e.category.toLowerCase() === normalized);
   }
 
-  results = results.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+  results = results
+    .slice()
+    .sort((a, b) =>
+      order === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date)
+    );
 
   const start = (page - 1) * limit;
   const paginated = results.slice(start, start + Number(limit));
