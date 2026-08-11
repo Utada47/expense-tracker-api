@@ -1,6 +1,6 @@
 const express = require('express');
 const store = require('../store');
-const { buildSummary } = require('../services/summary');
+const { buildSummary, buildMonthlySummary } = require('../services/summary');
 
 const router = express.Router();
 
@@ -30,6 +30,10 @@ router.get('/', (req, res) => {
 
 router.get('/summary', (req, res) => {
   res.json(buildSummary(store.getAll()));
+});
+
+router.get('/summary/monthly', (req, res) => {
+  res.json(buildMonthlySummary(store.getAll()));
 });
 
 router.post('/', (req, res) => {
