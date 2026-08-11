@@ -10,11 +10,12 @@ const PORT = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(requireApiKey);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
+app.use(requireApiKey);
 
 app.use('/expenses', expensesRouter);
 
