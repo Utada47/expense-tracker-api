@@ -5,7 +5,8 @@ const { buildSummary } = require('../services/summary');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const { category, order = 'desc' } = req.query;
+  const { category } = req.query;
+  const order = (req.query.order || 'desc').toLowerCase();
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.max(1, Number(req.query.limit) || 10);
   let results = store.getAll();
