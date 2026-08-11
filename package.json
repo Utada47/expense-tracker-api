@@ -8,6 +8,11 @@
     "test": "NODE_ENV=test jest --runInBand"
   },
   "license": "MIT",
+  "jest": {
+    "setupFiles": [
+      "./tests/env.setup.js"
+    ]
+  },
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
