@@ -37,6 +37,17 @@ router.get('/summary/monthly', (req, res) => {
   res.json(buildMonthlySummary(store.getAll()));
 });
 
+router.get('/export', (req, res) => {
+  const all = store.getAll();
+  const header = 'id,amount,description,category,date';
+  const rows = all.map((e) => `${e.id},${e.amount},${e.description},${e.category},${e.date}`);
+  const csv = [header, ...rows].join('\n');
+
+  res.header('Content-Type', 'text/csv');
+  res.attachment('expenses.csv');
+  res.send(csv);
+});
+
 router.post('/', (req, res) => {
   const { description, category } = req.body;
   const amount = typeof req.body.amount === 'string' ? Number(req.body.amount) : req.body.amount;
@@ -82,17 +93,6 @@ router.delete('/:id', (req, res) => {
     return res.status(404).json({ error: 'Expense not found' });
   }
   res.status(204).send();
-});
-
-router.get('/export', (req, res) => {
-  const all = store.getAll();
-  const header = 'id,amount,description,category,date';
-  const rows = all.map((e) => `${e.id},${e.amount},${e.description},${e.category},${e.date}`);
-  const csv = [header, ...rows].join('\n');
-
-  res.header('Content-Type', 'text/csv');
-  res.attachment('expenses.csv');
-  res.send(csv);
 });
 
 module.exports = router;
