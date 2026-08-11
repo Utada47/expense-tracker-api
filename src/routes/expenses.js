@@ -1,7 +1,7 @@
 const express = require('express');
 const store = require('../store');
 const { buildSummary, buildMonthlySummary } = require('../services/summary');
-const { validateExpenseInput } = require('../validators/expense');
+const { validateExpenseInput, validateExpenseUpdate } = require('../validators/expense');
 
 const router = express.Router();
 
@@ -64,6 +64,11 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+  const validationError = validateExpenseUpdate(req.body);
+  if (validationError) {
+    return res.status(400).json({ error: validationError });
+  }
+
   const updated = store.update(Number(req.params.id), req.body);
   if (!updated) {
     return res.status(404).json({ error: 'Expense not found' });

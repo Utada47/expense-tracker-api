@@ -13,4 +13,14 @@ function validateExpenseInput(body) {
   return null;
 }
 
-module.exports = { validateExpenseInput };
+function validateExpenseUpdate(body) {
+  if (body.amount !== undefined && typeof body.amount !== 'number') {
+    return 'amount must be a number';
+  }
+  if (body.category !== undefined && typeof body.category !== 'string') {
+    return 'category must be a string';
+  }
+  return null;
+}
+
+module.exports = { validateExpenseInput, validateExpenseUpdate };
