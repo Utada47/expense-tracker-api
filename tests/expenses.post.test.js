@@ -1,10 +1,13 @@
 const request = require('supertest');
 const app = require('../src/index');
 
+const headers = { 'x-api-key': process.env.API_KEY };
+
 describe('POST /expenses', () => {
   it('creates a new expense with valid data', async () => {
     const res = await request(app)
       .post('/expenses')
+      .set(headers)
       .send({ amount: 25, description: 'Coffee', category: 'Food' });
 
     expect(res.status).toBe(201);
@@ -13,7 +16,10 @@ describe('POST /expenses', () => {
   });
 
   it('rejects a request missing required fields', async () => {
-    const res = await request(app).post('/expenses').send({ description: 'No amount' });
+    const res = await request(app)
+      .post('/expenses')
+      .set(headers)
+      .send({ description: 'No amount' });
 
     expect(res.status).toBe(400);
   });
