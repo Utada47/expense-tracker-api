@@ -1,6 +1,6 @@
 {
   "name": "expense-tracker-api",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple REST API to track daily expenses",
   "main": "src/index.js",
   "scripts": {
