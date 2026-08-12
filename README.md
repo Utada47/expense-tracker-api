@@ -11,9 +11,10 @@ A simple REST API for tracking daily expenses, built with Node.js and Express.
 - Monthly spending summary
 - API key authentication
 - Rate limiting (100 requests / 15 min per IP)
-- CSV export
+- CSV export (with proper escaping)
+- SQLite persistent storage
 - Request logging (morgan)
-- Persistent storage (JSON file)
+- Persistent storage: SQLite (better-sqlite3)
 - Test suite with Jest + Supertest
 
 ## Getting Started
@@ -141,15 +142,16 @@ DELETE /expenses/:id
 
 ```
 src/
-  index.js               # app entrypoint
-  store.js                # data layer (JSON file persistence)
+  index.js                # app entrypoint
+  db.js                    # SQLite connection & schema
+  store.js                 # data layer (SQLite queries)
   routes/expenses.js      # expense endpoints
   services/summary.js     # summary/monthly summary logic
   validators/expense.js   # input validation
   middleware/errorHandler.js
   middleware/auth.js      # API key check
 tests/                    # Jest test suites
-data/                     # persisted JSON data (gitignored)
+data/                     # SQLite database file (gitignored)
 ```
 
 ## Roadmap
@@ -158,5 +160,5 @@ data/                     # persisted JSON data (gitignored)
 - [x] API key authentication
 - [x] Rate limiting
 - [x] Export expenses to CSV
+- [x] Swap JSON file storage for a real database (SQLite)
 - [ ] User accounts (multi-user support)
-- [ ] Swap JSON file storage for a real database
