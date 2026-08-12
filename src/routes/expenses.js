@@ -10,23 +10,10 @@ router.get('/', (req, res) => {
   const order = (req.query.order || 'desc').toLowerCase();
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.max(1, Number(req.query.limit) || 10);
-  let results = store.getAll();
 
-  if (category) {
-    const normalized = category.toLowerCase();
-    results = results.filter((e) => e.category.toLowerCase() === normalized);
-  }
+  const results = store.getAll({ category, order, limit, offset: (page - 1) * limit });
 
-  results = results
-    .slice()
-    .sort((a, b) =>
-      order === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date)
-    );
-
-  const start = (page - 1) * limit;
-  const paginated = results.slice(start, start + Number(limit));
-
-  res.json(paginated);
+  res.json(results);
 });
 
 router.get('/summary', (req, res) => {

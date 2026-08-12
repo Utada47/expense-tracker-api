@@ -1,7 +1,22 @@
 const db = require('./db');
 
-function getAll() {
-  return db.prepare('SELECT * FROM expenses').all();
+function getAll({ category, order = 'desc', limit, offset } = {}) {
+  let sql = 'SELECT * FROM expenses';
+  const params = [];
+
+  if (category) {
+    sql += ' WHERE LOWER(category) = LOWER(?)';
+    params.push(category);
+  }
+
+  sql += order === 'asc' ? ' ORDER BY date ASC' : ' ORDER BY date DESC';
+
+  if (limit !== undefined) {
+    sql += ' LIMIT ? OFFSET ?';
+    params.push(limit, offset || 0);
+  }
+
+  return db.prepare(sql).all(...params);
 }
 
 function add(expense) {
