@@ -24,10 +24,20 @@ router.get('/summary/monthly', (req, res) => {
   res.json(buildMonthlySummary(store.getAll()));
 });
 
+function csvEscape(value) {
+  const str = String(value);
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
 router.get('/export', (req, res) => {
   const all = store.getAll();
   const header = 'id,amount,description,category,date';
-  const rows = all.map((e) => `${e.id},${e.amount},${e.description},${e.category},${e.date}`);
+  const rows = all.map((e) =>
+    [e.id, e.amount, e.description, e.category, e.date].map(csvEscape).join(',')
+  );
   const csv = [header, ...rows].join('\n');
 
   res.header('Content-Type', 'text/csv');
