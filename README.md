@@ -58,6 +58,18 @@ Server runs at `http://localhost:3000` by default.
 npm test
 ```
 
+### Run with Docker
+
+```bash
+docker compose up --build
+```
+
+The API will be available at `http://localhost:3000`. Set your `API_KEY` via an `.env` file or the `API_KEY` environment variable before running.
+
+## Continuous Integration
+
+Tests run automatically on every push and pull request via GitHub Actions (see `.github/workflows/test.yml`).
+
 ## Authentication
 
 All `/expenses` routes require an API key header:
@@ -161,4 +173,6 @@ data/                     # SQLite database file (gitignored)
 - [x] Rate limiting
 - [x] Export expenses to CSV
 - [x] Swap JSON file storage for a real database (SQLite)
+- [x] Docker support
+- [x] CI pipeline (GitHub Actions)
 - [ ] User accounts (multi-user support)
