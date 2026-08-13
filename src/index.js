@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const expensesRouter = require('./routes/expenses');
 const errorHandler = require('./middleware/errorHandler');
 const requireApiKey = require('./middleware/auth');
+const db = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,6 +41,7 @@ if (require.main === module) {
   function shutdown(signal) {
     console.log(`${signal} received, shutting down gracefully...`);
     server.close(() => {
+      db.close();
       console.log('Server closed.');
       process.exit(0);
     });
