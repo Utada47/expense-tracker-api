@@ -24,7 +24,13 @@ app.use(express.json());
 app.use(limiter);
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+  let dbStatus = 'ok';
+  try {
+    db.prepare('SELECT 1').get();
+  } catch (err) {
+    dbStatus = 'error';
+  }
+  res.json({ status: 'ok', database: dbStatus });
 });
 
 app.use(requireApiKey);
