@@ -1,5 +1,6 @@
 const express = require('express');
 const store = require('../store');
+const budgetStore = require('../budgetStore');
 const { buildSummary, buildMonthlySummary } = require('../services/summary');
 const { validateExpenseInput, validateExpenseUpdate } = require('../validators/expense');
 
@@ -21,7 +22,7 @@ router.get('/summary', (req, res) => {
 });
 
 router.get('/summary/monthly', (req, res) => {
-  res.json(buildMonthlySummary(store.getAll()));
+  res.json(buildMonthlySummary(store.getAll(), budgetStore.getAllBudgets()));
 });
 
 function csvEscape(value) {

@@ -11,4 +11,13 @@ function getBudget(month) {
   return db.prepare('SELECT * FROM budgets WHERE month = ?').get(month);
 }
 
-module.exports = { setBudget, getBudget };
+function getAllBudgets() {
+  const rows = db.prepare('SELECT * FROM budgets').all();
+  const map = {};
+  for (const row of rows) {
+    map[row.month] = row.amount;
+  }
+  return map;
+}
+
+module.exports = { setBudget, getBudget, getAllBudgets };
