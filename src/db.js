@@ -23,4 +23,11 @@ db.exec(`
 
 db.exec('CREATE INDEX IF NOT EXISTS idx_expenses_category ON expenses(category)');
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS budgets (
+    month TEXT PRIMARY KEY,
+    amount REAL NOT NULL
+  )
+`);
+
 module.exports = db;
