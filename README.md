@@ -13,6 +13,7 @@ A simple REST API for tracking daily expenses, built with Node.js and Express.
 - Rate limiting (100 requests / 15 min per IP)
 - CSV export (with proper escaping)
 - SQLite persistent storage
+- Monthly budgets with over-budget detection
 - Request logging (morgan)
 - Persistent storage: SQLite (better-sqlite3)
 - Test suite with Jest + Supertest
@@ -118,6 +119,27 @@ GET /expenses/export
 
 Downloads all expenses as a `.csv` file.
 
+### Set a monthly budget
+
+```
+POST /budget
+Content-Type: application/json
+x-api-key: your-secret-key
+
+{
+  "month": "2026-08",
+  "amount": 500
+}
+```
+
+### Get a month's budget
+
+```
+GET /budget/:month
+```
+
+Example: `GET /budget/2026-08`. The monthly summary endpoint (`GET /expenses/summary/monthly`) also includes `budget` and `overBudget` for each month once a budget is set.
+
 ### Get one expense
 
 ```
@@ -158,6 +180,8 @@ src/
   db.js                    # SQLite connection & schema
   store.js                 # data layer (SQLite queries)
   routes/expenses.js      # expense endpoints
+  routes/budget.js         # budget endpoints
+  budgetStore.js           # budget data layer
   services/summary.js     # summary/monthly summary logic
   validators/expense.js   # input validation
   middleware/errorHandler.js
@@ -175,4 +199,5 @@ data/                     # SQLite database file (gitignored)
 - [x] Swap JSON file storage for a real database (SQLite)
 - [x] Docker support
 - [x] CI pipeline (GitHub Actions)
+- [x] Monthly budgets with alerts
 - [ ] User accounts (multi-user support)
