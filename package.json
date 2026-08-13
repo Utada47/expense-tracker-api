@@ -9,6 +9,9 @@
     "test": "cross-env NODE_ENV=test jest --runInBand"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "jest": {
     "setupFiles": [
       "./tests/env.setup.js"
