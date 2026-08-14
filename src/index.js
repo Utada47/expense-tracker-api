@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const expensesRouter = require('./routes/expenses');
 const budgetRouter = require('./routes/budget');
+const authRouter = require('./routes/auth');
 const errorHandler = require('./middleware/errorHandler');
 const requireApiKey = require('./middleware/auth');
 const db = require('./db');
@@ -33,6 +34,8 @@ app.get('/health', (req, res) => {
   }
   res.json({ status: 'ok', database: dbStatus });
 });
+
+app.use('/auth', authRouter);
 
 app.use(requireApiKey);
 
