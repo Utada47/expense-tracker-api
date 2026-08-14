@@ -17,7 +17,8 @@ db.exec(`
     amount REAL NOT NULL,
     description TEXT NOT NULL,
     category TEXT NOT NULL DEFAULT 'uncategorized',
-    date TEXT NOT NULL
+    date TEXT NOT NULL,
+    user_id INTEGER
   )
 `);
 
