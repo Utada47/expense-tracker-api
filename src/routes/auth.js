@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const userStore = require('../userStore');
 
 const router = express.Router();
@@ -10,7 +11,8 @@ router.post('/register', (req, res) => {
     return res.status(409).json({ error: 'Email already registered' });
   }
 
-  const user = userStore.createUser(email, password);
+  const passwordHash = bcrypt.hashSync(password, 10);
+  const user = userStore.createUser(email, passwordHash);
   res.status(201).json({ id: user.id, email: user.email });
 });
 
