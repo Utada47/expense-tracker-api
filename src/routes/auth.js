@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userStore = require('../userStore');
+const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
 
@@ -33,6 +34,14 @@ router.post('/login', (req, res) => {
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
   res.json({ token });
+});
+
+router.get('/me', requireAuth, (req, res) => {
+  const user = userStore.findById(req.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  res.json({ id: user.id, email: user.email });
 });
 
 module.exports = router;
