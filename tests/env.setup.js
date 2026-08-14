@@ -1,4 +1,5 @@
 process.env.API_KEY = process.env.API_KEY || 'test-key';
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret';
 
 if (process.env.NODE_ENV === 'test') {
   const fs = require('fs');
