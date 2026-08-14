@@ -8,6 +8,12 @@ const router = express.Router();
 router.post('/register', (req, res) => {
   const { email, password } = req.body;
 
+  if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'A valid email is required' });
+  }
+  if (typeof password !== 'string' || password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  }
   if (userStore.findByEmail(email)) {
     return res.status(409).json({ error: 'Email already registered' });
   }
