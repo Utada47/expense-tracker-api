@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../src/index');
-
-const headers = { 'x-api-key': process.env.API_KEY || 'changeme' };
+const { getAuthHeaders } = require('./authHelper');
 
 describe('GET /expenses/summary', () => {
   it('returns total and count', async () => {
+    const headers = await getAuthHeaders();
     await request(app)
       .post('/expenses')
       .set(headers)

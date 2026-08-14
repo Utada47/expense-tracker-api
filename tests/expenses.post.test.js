@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../src/index');
-
-const headers = { 'x-api-key': process.env.API_KEY };
+const { getAuthHeaders } = require('./authHelper');
 
 describe('POST /expenses', () => {
   it('creates a new expense with valid data', async () => {
+    const headers = await getAuthHeaders();
     const res = await request(app)
       .post('/expenses')
       .set(headers)
@@ -16,6 +16,7 @@ describe('POST /expenses', () => {
   });
 
   it('rejects a request missing required fields', async () => {
+    const headers = await getAuthHeaders();
     const res = await request(app)
       .post('/expenses')
       .set(headers)

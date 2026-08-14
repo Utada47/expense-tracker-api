@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../src/index');
-
-const headers = { 'x-api-key': process.env.API_KEY };
+const { getAuthHeaders } = require('./authHelper');
 
 describe('GET /expenses/export CSV escaping', () => {
   it('wraps fields containing commas in double quotes', async () => {
+    const headers = await getAuthHeaders();
     await request(app)
       .post('/expenses')
       .set(headers)

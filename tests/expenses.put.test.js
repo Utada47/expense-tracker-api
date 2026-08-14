@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../src/index');
-
-const headers = { 'x-api-key': process.env.API_KEY };
+const { getAuthHeaders } = require('./authHelper');
 
 describe('PUT /expenses/:id', () => {
   it('rejects an update with an invalid amount type', async () => {
+    const headers = await getAuthHeaders();
     const created = await request(app)
       .post('/expenses')
       .set(headers)

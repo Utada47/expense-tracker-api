@@ -1,14 +1,11 @@
 const request = require('supertest');
 const app = require('../src/index');
-
-const headers = { 'x-api-key': process.env.API_KEY };
+const { getAuthHeaders } = require('./authHelper');
 
 describe('GET /expenses', () => {
   it('returns a list of expenses', async () => {
-    await request(app)
-      .post('/expenses')
-      .set(headers)
-      .send({ amount: 10, description: 'Snack' });
+    const headers = await getAuthHeaders();
+    await request(app).post('/expenses').set(headers).send({ amount: 10, description: 'Snack' });
 
     const res = await request(app).get('/expenses').set(headers);
 
@@ -18,6 +15,7 @@ describe('GET /expenses', () => {
   });
 
   it('filters expenses by category', async () => {
+    const headers = await getAuthHeaders();
     await request(app)
       .post('/expenses')
       .set(headers)
