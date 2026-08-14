@@ -42,6 +42,7 @@ cp .env.example .env
 ```
 PORT=3000
 API_KEY=your-secret-key
+JWT_SECRET=another-long-random-secret
 ```
 
 ### Run the server
@@ -73,13 +74,41 @@ Tests run automatically on every push and pull request via GitHub Actions (see `
 
 ## Authentication
 
-All `/expenses` routes require an API key header:
+Every request (except `/health`) needs the API key header:
 
 ```
 x-api-key: your-secret-key
 ```
 
-`/health` does not require authentication.
+`/expenses` routes additionally require a per-user JWT, obtained by registering and logging in:
+
+```bash
+# 1. Register
+curl -X POST http://localhost:3000/auth/register \
+  -H "x-api-key: your-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","password":"a-strong-password"}'
+
+# 2. Log in to get a token
+curl -X POST http://localhost:3000/auth/login \
+  -H "x-api-key: your-secret-key" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","password":"a-strong-password"}'
+# => { "token": "..." }
+
+# 3. Use the token for /expenses routes
+curl http://localhost:3000/expenses \
+  -H "x-api-key: your-secret-key" \
+  -H "Authorization: Bearer <token>"
+```
+
+Each user only ever sees and modifies their own expenses. `/budget` still only requires the API key (budgets are not yet per-user).
+
+### Auth endpoints
+
+- `POST /auth/register` — `{ "email": "...", "password": "..." }` (password: 8+ characters)
+- `POST /auth/login` — returns `{ "token": "..." }`
+- `GET /auth/me` — returns the current authenticated user (requires the JWT)
 
 ## API Reference
 
@@ -186,6 +215,9 @@ src/
   validators/expense.js   # input validation
   middleware/errorHandler.js
   middleware/auth.js      # API key check
+  middleware/requireAuth.js # JWT check (per-user)
+  routes/auth.js           # register/login/me
+  userStore.js              # user data layer
 tests/                    # Jest test suites
 data/                     # SQLite database file (gitignored)
 ```
@@ -200,4 +232,11 @@ data/                     # SQLite database file (gitignored)
 - [x] Docker support
 - [x] CI pipeline (GitHub Actions)
 - [x] Monthly budgets with alerts
-- [ ] User accounts (multi-user support)
+- [x] User accounts (multi-user support with JWT)
+
+## Future ideas
+
+- [ ] Per-user budgets (currently budgets are shared, not per-user)
+- [ ] Refresh tokens / token revocation
+- [ ] Recurring expenses
+- [ ] Multi-currency support
