@@ -72,6 +72,31 @@ router.get('/export', (req, res) => {
   res.send(csv);
 });
 
+router.post('/import', (req, res) => {
+  const { csv } = req.body;
+  if (typeof csv !== 'string') {
+    return res.status(400).json({ error: 'csv (string) is required' });
+  }
+
+  const lines = csv.trim().split('\n');
+  const [, ...dataLines] = lines; // skip header row
+
+  const imported = [];
+  for (const line of dataLines) {
+    const [, amount, description, category] = line.split(',');
+    const expense = store.add({
+      amount: Number(amount),
+      description,
+      category: category || 'uncategorized',
+      date: new Date().toISOString(),
+      userId: req.userId,
+    });
+    imported.push(expense);
+  }
+
+  res.status(201).json({ imported: imported.length, expenses: imported });
+});
+
 router.post('/', (req, res) => {
   const { description, category } = req.body;
   const amount = typeof req.body.amount === 'string' ? Number(req.body.amount) : req.body.amount;
