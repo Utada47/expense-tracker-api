@@ -148,6 +148,32 @@ GET /expenses/export
 
 Downloads all expenses as a `.csv` file.
 
+### Import from CSV
+
+```
+POST /expenses/import
+Content-Type: application/json
+x-api-key: your-secret-key
+
+{
+  "csv": "id,amount,description,category,date\n1,25,Coffee,Food,2026-01-01"
+}
+```
+
+Malformed or empty rows are skipped automatically.
+
+### Search expenses
+
+```
+GET /expenses/search?q=coffee
+```
+
+Matches against the `description` field, case-insensitively.
+
+### Pagination metadata
+
+`GET /expenses` responses include `X-Total-Count` and `X-Total-Pages` headers alongside the paginated array.
+
 ### Set a monthly budget
 
 ```
@@ -232,6 +258,8 @@ data/                     # SQLite database file (gitignored)
 - [x] Docker support
 - [x] CI pipeline (GitHub Actions)
 - [x] Monthly budgets with alerts
+- [x] Multi-user authentication (JWT)
+- [x] Search, CSV import, and pagination metadata
 - [x] User accounts (multi-user support with JWT)
 
 ## Future ideas
