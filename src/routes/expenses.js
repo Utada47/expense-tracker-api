@@ -83,9 +83,15 @@ router.post('/import', (req, res) => {
 
   const imported = [];
   for (const line of dataLines) {
+    if (!line.trim()) continue;
+
     const [, amount, description, category] = line.split(',');
+    const numericAmount = Number(amount);
+
+    if (!Number.isFinite(numericAmount) || !description) continue;
+
     const expense = store.add({
-      amount: Number(amount),
+      amount: numericAmount,
       description,
       category: category || 'uncategorized',
       date: new Date().toISOString(),
