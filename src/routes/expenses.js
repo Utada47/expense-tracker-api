@@ -42,6 +42,19 @@ function csvEscape(value) {
   return str;
 }
 
+router.get('/search', (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ error: 'Query parameter "q" is required' });
+  }
+
+  const all = store.getAll({ userId: req.userId });
+  const normalized = q.toLowerCase();
+  const matches = all.filter((e) => e.description.toLowerCase().includes(normalized));
+
+  res.json(matches);
+});
+
 router.get('/export', (req, res) => {
   const all = store.getAll({ userId: req.userId });
   const header = 'id,amount,description,category,date';
