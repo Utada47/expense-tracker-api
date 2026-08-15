@@ -23,6 +23,10 @@ router.get('/', (req, res) => {
     offset: (page - 1) * limit,
   });
 
+  const totalCount = store.countAll({ userId: req.userId, category });
+  res.set('X-Total-Count', String(totalCount));
+  res.set('X-Total-Pages', String(Math.ceil(totalCount / limit)));
+
   res.json(results);
 });
 
