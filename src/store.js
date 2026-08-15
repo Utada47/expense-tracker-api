@@ -54,4 +54,14 @@ function remove(id, userId) {
   return info.changes > 0;
 }
 
-module.exports = { getAll, add, getByIdForUser, update, remove };
+function countAll({ userId, category }) {
+  let sql = 'SELECT COUNT(*) as count FROM expenses WHERE user_id = ?';
+  const params = [userId];
+  if (category) {
+    sql += ' AND LOWER(category) = LOWER(?)';
+    params.push(category);
+  }
+  return db.prepare(sql).get(...params).count;
+}
+
+module.exports = { getAll, add, getByIdForUser, update, remove, countAll };
