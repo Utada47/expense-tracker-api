@@ -78,6 +78,13 @@ router.post('/change-password', requireAuth, (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const user = userStore.findById(req.userId);
 
+  if (!user || !bcrypt.compareSync(currentPassword || '', user.password_hash)) {
+    return res.status(401).json({ error: 'Current password is incorrect' });
+  }
+  if (typeof newPassword !== 'string' || newPassword.length < 8) {
+    return res.status(400).json({ error: 'New password must be at least 8 characters' });
+  }
+
   const passwordHash = bcrypt.hashSync(newPassword, 10);
   userStore.updatePassword(req.userId, passwordHash);
   res.json({ message: 'Password changed successfully' });
