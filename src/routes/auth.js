@@ -74,4 +74,13 @@ router.post('/reset-password', (req, res) => {
   res.json({ message: 'Password has been reset successfully' });
 });
 
+router.post('/change-password', requireAuth, (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const user = userStore.findById(req.userId);
+
+  const passwordHash = bcrypt.hashSync(newPassword, 10);
+  userStore.updatePassword(req.userId, passwordHash);
+  res.json({ message: 'Password changed successfully' });
+});
+
 module.exports = router;
