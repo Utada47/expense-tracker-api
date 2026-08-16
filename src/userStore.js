@@ -16,4 +16,8 @@ function findById(id) {
   return db.prepare('SELECT * FROM users WHERE id = ?').get(id);
 }
 
-module.exports = { createUser, findByEmail, findById };
+function updatePassword(userId, passwordHash) {
+  db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, userId);
+}
+
+module.exports = { createUser, findByEmail, findById, updatePassword };
