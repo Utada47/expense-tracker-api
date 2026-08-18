@@ -1,5 +1,10 @@
 # Expense Tracker API
 
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](./.github/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](./CHANGELOG.md)
+
+
 A simple REST API for tracking daily expenses, built with Node.js and Express.
 
 ## Features
@@ -109,6 +114,11 @@ Each user only ever sees and modifies their own expenses. `/budget` still only r
 - `POST /auth/register` — `{ "email": "...", "password": "..." }` (password: 8+ characters)
 - `POST /auth/login` — returns `{ "token": "..." }`
 - `GET /auth/me` — returns the current authenticated user (requires the JWT)
+- `POST /auth/forgot-password` — `{ "email": "..." }`, returns a reset token (in a real deployment this would be emailed instead)
+- `POST /auth/reset-password` — `{ "token": "...", "newPassword": "..." }`, token expires after 30 minutes
+- `POST /auth/change-password` — `{ "currentPassword": "...", "newPassword": "..." }` (requires the JWT; verifies the current password first)
+- `POST /auth/refresh` — `{ "refreshToken": "..." }`, returns a new short-lived access token (access tokens expire after 15 minutes; refresh tokens after 30 days)
+- `DELETE /auth/account` — deletes the authenticated user's account and all associated expenses, budgets access, and tokens
 
 ## API Reference
 
@@ -260,6 +270,9 @@ data/                     # SQLite database file (gitignored)
 - [x] Monthly budgets with alerts
 - [x] Multi-user authentication (JWT)
 - [x] Search, CSV import, and pagination metadata
+- [x] Password reset and change-password flow
+- [x] Refresh tokens and self-service account deletion
+- [x] Security headers (helmet)
 - [x] User accounts (multi-user support with JWT)
 
 ## Future ideas
