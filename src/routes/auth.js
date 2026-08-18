@@ -94,4 +94,18 @@ router.post('/change-password', requireAuth, (req, res) => {
   res.json({ message: 'Password changed successfully' });
 });
 
+router.post('/refresh', (req, res) => {
+  const { refreshToken } = req.body;
+  const record = refreshTokenStore.findValidRefreshToken(refreshToken);
+
+  if (!record) {
+    return res.status(401).json({ error: 'Invalid or expired refresh token' });
+  }
+
+  const token = jwt.sign({ userId: record.user_id, type: 'access' }, process.env.JWT_SECRET, {
+    expiresIn: '15m',
+  });
+  res.json({ token });
+});
+
 module.exports = router;
