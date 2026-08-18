@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -20,6 +21,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+app.use(helmet());
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
