@@ -108,4 +108,9 @@ router.post('/refresh', (req, res) => {
   res.json({ token });
 });
 
+router.delete('/account', requireAuth, (req, res) => {
+  userStore.deleteUser(req.userId);
+  res.status(204).send();
+});
+
 module.exports = router;

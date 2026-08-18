@@ -20,4 +20,8 @@ function updatePassword(userId, passwordHash) {
   db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, userId);
 }
 
-module.exports = { createUser, findByEmail, findById, updatePassword };
+function deleteUser(userId) {
+  db.prepare('DELETE FROM users WHERE id = ?').run(userId);
+}
+
+module.exports = { createUser, findByEmail, findById, updatePassword, deleteUser };
