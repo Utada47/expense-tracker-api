@@ -1,8 +1,9 @@
 {
   "name": "expense-tracker-api",
   "version": "0.8.0",
-  "description": "A simple REST API to track daily expenses",
+  "description": "A REST API for tracking daily expenses with multi-user auth, budgets, and SQLite storage",
   "main": "src/index.js",
+  "keywords": ["expense-tracker", "rest-api", "express", "sqlite", "jwt"],
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
