@@ -21,7 +21,19 @@ function updatePassword(userId, passwordHash) {
 }
 
 function deleteUser(userId) {
-  db.prepare('DELETE FROM users WHERE id = ?').run(userId);
+  const deleteExpenses = db.prepare('DELETE FROM expenses WHERE user_id = ?');
+  const deleteRefreshTokens = db.prepare('DELETE FROM refresh_tokens WHERE user_id = ?');
+  const deleteResetTokens = db.prepare('DELETE FROM password_reset_tokens WHERE user_id = ?');
+  const deleteUserRow = db.prepare('DELETE FROM users WHERE id = ?');
+
+  const cascade = db.transaction((id) => {
+    deleteExpenses.run(id);
+    deleteRefreshTokens.run(id);
+    deleteResetTokens.run(id);
+    deleteUserRow.run(id);
+  });
+
+  cascade(userId);
 }
 
 module.exports = { createUser, findByEmail, findById, updatePassword, deleteUser };
