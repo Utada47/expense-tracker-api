@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userStore = require('../userStore');
 const passwordResetStore = require('../passwordResetStore');
+const refreshTokenStore = require('../refreshTokenStore');
 const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
@@ -33,8 +34,11 @@ router.post('/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-  res.json({ token });
+  const token = jwt.sign({ userId: user.id, type: 'access' }, process.env.JWT_SECRET, {
+    expiresIn: '15m',
+  });
+  const refreshToken = refreshTokenStore.createRefreshToken(user.id);
+  res.json({ token, refreshToken });
 });
 
 router.get('/me', requireAuth, (req, res) => {
