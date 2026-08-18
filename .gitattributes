@@ -1,0 +1,7 @@
+# Normalize line endings to LF for all text files, regardless of OS.
+# This prevents CRLF/LF mismatches between Windows, Mac, and Linux contributors.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
