@@ -7,6 +7,8 @@
 
 A simple REST API for tracking daily expenses, built with Node.js and Express.
 
+> **Status: v1.0.0 — feature-complete.** Built incrementally over multiple days as a learning project, with every feature backed by tests (see `CHANGELOG.md` for the full history, including real bugs caught and fixed along the way). `npm audit` reports 0 known vulnerabilities as of this release.
+
 ## Features
 
 - CRUD endpoints for expenses
