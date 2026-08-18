@@ -277,9 +277,8 @@ data/                     # SQLite database file (gitignored)
 - [x] Security headers (helmet)
 - [x] User accounts (multi-user support with JWT)
 
-## Future ideas
+## Known limitations / future ideas
 
-- [ ] Per-user budgets (currently budgets are shared, not per-user)
-- [ ] Refresh tokens / token revocation
+- [ ] Budgets are currently shared across all users, not per-user
 - [ ] Recurring expenses
 - [ ] Multi-currency support
